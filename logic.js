@@ -1,4 +1,4 @@
-﻿const monsterArtwork = window.monsterArtwork;
+const monsterArtwork = window.monsterArtwork;
 
 const monsters = [
         {
@@ -240,7 +240,12 @@ const monsters = [
             name: "Bazelgeuse", class: "Flying Wyvern", element: "Blast",
             ecology: "A roaming bomber that scatters explosive scales over the battlefield before diving into the chaos.",
             ailments: ["Blastblight"],
-            hitzones: []
+            hitzones: [
+                { part: "Head", cut: 65, blunt: 65, ammo: 45, fire: 0, water: 30, thunder: 5, ice: 20, dragon: 10 },
+                { part: "Wings", cut: 45, blunt: 40, ammo: 30, fire: 0, water: 15, thunder: 5, ice: 10, dragon: 5 },
+                { part: "Tail", cut: 50, blunt: 45, ammo: 35, fire: 0, water: 20, thunder: 5, ice: 15, dragon: 5 },
+                { part: "Forelegs", cut: 35, blunt: 35, ammo: 25, fire: 0, water: 10, thunder: 5, ice: 5, dragon: 5 }
+            ]
         },
         {
             name: "Beotodus", class: "Piscine Wyvern", element: "Ice",
@@ -258,7 +263,12 @@ const monsters = [
             name: "Chameleos", class: "Elder Dragon", element: "Poison",
             ecology: "A mysterious Elder Dragon that vanishes from sight and attacks with clouds of potent poison.",
             ailments: ["Poison"],
-            hitzones: []
+            hitzones: [
+                { part: "Head", cut: 55, blunt: 50, ammo: 45, fire: 25, water: 0, thunder: 10, ice: 0, dragon: 20 },
+                { part: "Wings", cut: 22, blunt: 20, ammo: 20, fire: 20, water: 0, thunder: 10, ice: 0, dragon: 15 },
+                { part: "Tail", cut: 35, blunt: 22, ammo: 45, fire: 10, water: 0, thunder: 10, ice: 0, dragon: 5 },
+                { part: "Forelegs", cut: 45, blunt: 45, ammo: 20, fire: 20, water: 0, thunder: 10, ice: 0, dragon: 10 }
+            ]
         },
         {
             name: "Congalala", class: "Fanged Beast", element: "None",

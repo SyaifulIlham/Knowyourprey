@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hunter's Kompendium - Monster Field Guide</title>
+    <title>Hunter's Kompendium - MHW: Iceborne Field Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -49,12 +49,12 @@
             z-index: -2;
             inset: 0;
             content: "";
-            background-image: url("assets/monsters/rathalos.png");
-            background-position: 76% 38%;
+            background-image: url("assets/monsters/velkhana.png");
+            background-position: 78% 36%;
             background-repeat: no-repeat;
-            background-size: auto 125%;
-            opacity: 0.62;
-            filter: saturate(0.82);
+            background-size: auto 122%;
+            opacity: 0.6;
+            filter: saturate(0.88);
         }
         .hero::after {
             position: absolute;
@@ -62,7 +62,7 @@
             inset: 0;
             content: "";
             background:
-                linear-gradient(90deg, #12110f 1%, rgba(18, 17, 15, 0.95) 34%, rgba(18, 17, 15, 0.42) 72%, rgba(18, 17, 15, 0.2)),
+                linear-gradient(90deg, #12110f 1%, rgba(18, 17, 15, 0.95) 36%, rgba(18, 17, 15, 0.45) 72%, rgba(18, 17, 15, 0.2)),
                 linear-gradient(0deg, #12110f 0%, transparent 42%);
         }
         .eyebrow {
@@ -107,7 +107,7 @@
         .monster-art {
             position: relative;
             display: grid;
-            height: 210px;
+            height: 205px;
             place-items: center;
             overflow: hidden;
             background:
@@ -142,20 +142,54 @@
             border: 1px dashed #514b3e;
             background: rgba(30, 28, 24, 0.75);
         }
-        .hitzone-table th, .hitzone-table td { border: 1px solid #3f3f46; text-align: center; padding: 0.5rem; }
-        .hitzone-table th { background-color: #18181b; color: #a1a1aa; font-size: 0.875rem; }
-        .weak-point-raw { color: #facc15; font-weight: bold; }
-        .weak-point-elem { color: #38bdf8; font-weight: bold; }
-        dialog::backdrop { background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(5px); }
+        .rank-tab {
+            border: 1px solid #3f3b32;
+            background: #141311;
+            color: #a8a29e;
+            transition: all 150ms ease;
+        }
+        .rank-tab:hover {
+            border-color: #b45309;
+            color: #fef3c7;
+        }
+        .rank-tab.active-low {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.16);
+            color: #6ee7b7;
+        }
+        .rank-tab.active-high {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fcd34d;
+        }
+        .rank-tab.active-master {
+            border-color: #f43f5e;
+            background: rgba(244, 63, 94, 0.18);
+            color: #fda4af;
+        }
+        .drop-table th, .drop-table td {
+            border-bottom: 1px solid #2c2923;
+            padding: 0.55rem 0.7rem;
+        }
+        .drop-table th {
+            background-color: #141311;
+            color: #a8a29e;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        dialog::backdrop { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
         dialog { background: #181715; border: 1px solid #63543b; color: white; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #12110f; }
+        ::-webkit-scrollbar-thumb { background: #3f3a31; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d97706; }
         @media (max-width: 640px) {
             .hero { min-height: 420px; }
             .hero::before { background-position: 68% 28%; background-size: auto 90%; }
-            .hero::after { background: linear-gradient(0deg, #12110f 2%, rgba(18, 17, 15, 0.82) 48%, rgba(18, 17, 15, 0.2)); }
-            .monster-art { height: 190px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+            .hero::after { background: linear-gradient(0deg, #12110f 2%, rgba(18, 17, 15, 0.85) 48%, rgba(18, 17, 15, 0.2)); }
+            .monster-art { height: 185px; }
         }
     </style>
 </head>
@@ -164,24 +198,31 @@
 <div class="max-w-7xl mx-auto">
     <header class="hero mb-8 rounded-sm">
         <div class="relative z-10 flex min-h-[360px] flex-col justify-between p-6 sm:p-10 md:p-12">
-            <div class="flex items-center justify-between gap-4">
-                <a href="#" class="eyebrow no-underline">Hunter's Guild <span class="text-zinc-300">/ Field Archive</span></a>
-                <span class="hidden sm:inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-black/40 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-200">
-                    <span class="h-2 w-2 rounded-full bg-amber-400"></span> Master Rank
-                </span>
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <a href="#" class="eyebrow no-underline">Hunter's Guild <span class="text-zinc-300">/ MHW: Iceborne Archive</span></a>
+                <div class="flex items-center gap-2">
+                    <span id="apiStatusBadge" class="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-black/50 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-200">
+                        <span class="h-2 w-2 rounded-full bg-amber-400 animate-pulse"></span> Connecting API...
+                    </span>
+                    <button id="refreshApiBtn" type="button" title="Perbarui data dari mhw-db.com" class="rounded-sm border border-zinc-700 bg-zinc-900/90 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-zinc-300 transition hover:border-amber-500 hover:text-amber-300">
+                        Sync API
+                    </button>
+                </div>
             </div>
             <div class="max-w-2xl py-10">
-                <p class="eyebrow mb-3">The New World &middot; Monster Field Guide</p>
+                <p class="eyebrow mb-3">Monster Hunter: World &amp; Iceborne &middot; Field Guide</p>
                 <h1 class="text-4xl font-black uppercase leading-[0.95] tracking-tight text-white sm:text-6xl">Know your<br><span class="text-amber-400">prey.</span></h1>
-                <p class="mt-5 max-w-xl text-sm leading-6 text-zinc-200 sm:text-base">Study the creatures that roam the wilds. Learn their weaknesses, prepare your gear, and make every hunt count.</p>
+                <p class="mt-5 max-w-xl text-sm leading-6 text-zinc-200 sm:text-base">Study weaknesses, ailments, forgeable armor sets, and exact material drop rates across Low Rank, High Rank, and Master Rank.</p>
                 <a href="#field-guide" class="mt-7 inline-flex items-center gap-3 border border-amber-400 bg-amber-500 px-5 py-3 text-xs font-black uppercase tracking-[0.16em] text-zinc-950 transition hover:bg-amber-300">
                     Enter the field guide <span aria-hidden="true">&rarr;</span>
                 </a>
             </div>
-            <div class="flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-zinc-300">
-                <span><span id="heroMonsterCount" class="text-amber-300">50</span> known monsters</span>
+            <div class="flex flex-wrap items-center gap-5 text-xs font-bold uppercase tracking-wider text-zinc-300">
+                <span><span id="heroMonsterCount" class="text-amber-300">--</span> large monsters</span>
                 <span class="h-1 w-1 rounded-full bg-amber-500"></span>
-                <span>Track &middot; Prepare &middot; Hunt</span>
+                <span>Low &middot; High &middot; Master Rank</span>
+                <span class="h-1 w-1 rounded-full bg-amber-500"></span>
+                <span>Live mhw-db.com Data</span>
             </div>
         </div>
     </header>
@@ -192,13 +233,13 @@
                 <p class="section-label mb-1">Guild records</p>
                 <h2 class="text-2xl font-black uppercase tracking-wide text-white sm:text-3xl">Monster Field Guide</h2>
             </div>
-            <p class="text-sm text-zinc-400"><span id="resultCount" class="font-bold text-amber-300">20</span> creatures in the archive</p>
+            <p class="text-sm text-zinc-400"><span id="resultCount" class="font-bold text-amber-300">0</span> creatures in the archive</p>
         </div>
 
-        <div class="mb-7 grid grid-cols-1 gap-3 border border-zinc-700/80 bg-zinc-900/80 p-4 md:grid-cols-3">
-            <div>
-                <label for="searchInput" class="section-label mb-2 block">Search the archive</label>
-                <input type="search" id="searchInput" class="hunt-input w-full px-3 text-sm" placeholder="Name your target..." autocomplete="off">
+        <div class="mb-7 grid grid-cols-1 gap-3 border border-zinc-700/80 bg-zinc-900/80 p-4 md:grid-cols-4">
+            <div class="md:col-span-2">
+                <label for="searchInput" class="section-label mb-2 block">Search Monster or Material Drop</label>
+                <input type="search" id="searchInput" class="hunt-input w-full px-3 text-sm" placeholder="e.g. Velkhana, Rathalos Mantle, Immortal Reactor..." autocomplete="off">
             </div>
             <div>
                 <label for="classFilter" class="section-label mb-2 block">Species</label>
@@ -207,76 +248,154 @@
                 </select>
             </div>
             <div>
-                <label for="elementFilter" class="section-label mb-2 block">Element</label>
+                <label for="elementFilter" class="section-label mb-2 block">Top Elemental Weakness</label>
                 <select id="elementFilter" class="hunt-select w-full px-3 text-sm">
                     <option value="all">All elements</option>
+                    <option value="Fire">Fire</option>
+                    <option value="Water">Water</option>
+                    <option value="Thunder">Thunder</option>
+                    <option value="Ice">Ice</option>
+                    <option value="Dragon">Dragon</option>
                 </select>
             </div>
         </div>
 
+        <!-- Loading State -->
+        <div id="loadingState" class="border border-zinc-800 bg-zinc-900/60 px-6 py-16 text-center">
+            <div class="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-zinc-700 border-t-amber-400"></div>
+            <p class="text-lg font-black uppercase tracking-wider text-amber-300">Fetching Guild Records...</p>
+            <p class="mt-1 text-sm text-zinc-400">Loading Monster Hunter: World &amp; Iceborne monsters, drop rates, and armor sets from mhw-db.com</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="hidden border border-rose-800/70 bg-rose-950/30 px-6 py-12 text-center">
+            <p class="text-lg font-black uppercase text-rose-300">Failed to reach Guild Archive</p>
+            <p id="errorMessage" class="mt-2 text-sm text-zinc-300">Unable to load data from mhw-db.com.</p>
+            <button id="retryBtn" type="button" class="mt-4 border border-amber-400 bg-amber-500 px-4 py-2 text-xs font-black uppercase tracking-wider text-zinc-950 hover:bg-amber-300">
+                Retry Connection
+            </button>
+        </div>
+
+        <!-- Monster Grid -->
         <div id="monsterGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-live="polite">
             <!-- Rendered by JS -->
         </div>
+
+        <!-- Empty Search State -->
         <div id="emptyState" class="empty-state hidden mt-4 px-5 py-12 text-center">
             <p class="text-xl font-black uppercase text-white">No tracks found</p>
-            <p class="mt-2 text-sm text-zinc-400">Try another name, species, or element.</p>
+            <p class="mt-2 text-sm text-zinc-400">Try another monster name, material drop, species, or elemental weakness.</p>
         </div>
     </main>
 </div>
 
-<dialog id="monsterModal" class="m-auto w-[calc(100%-1.5rem)] max-w-5xl p-0 shadow-2xl">
-    <div class="grid md:grid-cols-[minmax(240px,0.8fr)_1.2fr]">
-        <div class="relative flex min-h-[250px] items-center justify-center overflow-hidden bg-gradient-to-br from-amber-950 to-zinc-950 md:min-h-full">
-            <img id="modalImage" src="" alt="" class="relative z-10 max-h-[360px] w-full object-contain p-6">
-            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_80%,rgba(245,158,11,0.2),transparent_60%)]"></div>
-        </div>
-        <div class="p-5 sm:p-7">
-        <div class="flex justify-between items-start mb-4 border-b border-zinc-800 pb-4">
+<!-- Monster Dossier Modal -->
+<dialog id="monsterModal" class="m-auto w-[calc(100%-1.5rem)] max-w-6xl max-h-[90vh] overflow-y-auto p-0 shadow-2xl">
+    <div class="grid lg:grid-cols-[minmax(250px,0.72fr)_1.28fr]">
+        <!-- Left Artwork & Quick Info Column -->
+        <div class="relative flex flex-col justify-between border-b border-zinc-800 bg-gradient-to-br from-amber-950/70 via-zinc-950 to-zinc-950 p-6 lg:border-b-0 lg:border-r">
             <div>
-                <p class="section-label mb-1">Target dossier</p>
-                <h2 id="modalName" class="text-2xl font-black uppercase text-zinc-100 sm:text-3xl">Monster Name</h2>
-                <p id="modalClass" class="text-zinc-400 text-sm">Class</p>
+                <span id="modalSpeciesBadge" class="inline-block rounded-sm border border-amber-500/30 bg-black/50 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-amber-300">Species</span>
+                <div class="relative my-4 flex min-h-[220px] items-center justify-center">
+                    <img id="modalImage" src="" alt="" class="relative z-10 max-h-[280px] w-full object-contain drop-shadow-[0_14px_20px_rgba(0,0,0,0.7)]">
+                    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_75%,rgba(245,158,11,0.22),transparent_65%)]"></div>
+                </div>
             </div>
-            <button id="closeBtn" aria-label="Close monster details" class="ml-3 text-zinc-400 hover:text-white font-bold text-2xl">&times;</button>
-        </div>
-        
-        <div class="mb-6">
-            <h3 class="text-sm uppercase text-zinc-500 font-bold mb-2">Ecology & Ailments</h3>
-            <p id="modalEcology" class="text-zinc-300 text-sm leading-relaxed mb-3">Desc</p>
-            <div class="flex gap-2 text-sm" id="modalAilments">
-                <!-- Badges -->
+
+            <div class="space-y-4 border-t border-zinc-800/90 pt-4">
+                <div>
+                    <p class="section-label mb-1.5">Known Habitats</p>
+                    <div id="modalLocations" class="flex flex-wrap gap-1.5 text-xs">
+                        <!-- Habitat badges -->
+                    </div>
+                </div>
+
+                <div>
+                    <p class="section-label mb-1.5">Ailments Inflicted</p>
+                    <div id="modalAilments" class="space-y-1.5 text-xs">
+                        <!-- Ailments list -->
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div>
-            <h3 class="text-sm uppercase text-zinc-500 font-bold mb-2">Hitzone Values (HZV)</h3>
-            <div class="overflow-x-auto border border-zinc-800 rounded">
-                <table class="w-full hitzone-table text-sm">
-                    <thead>
-                        <tr>
-                            <th class="text-left">Part</th>
-                            <th title="Sever/Cut">CUT</th>
-                            <th title="Blunt">BLUNT</th>
-                            <th title="Ammo">AMMO</th>
-                            <th title="Fire" class="bg-red-950/30">FIRE</th>
-                            <th title="Water" class="bg-blue-950/30">WATER</th>
-                            <th title="Thunder" class="bg-yellow-950/30">THUNDER</th>
-                            <th title="Ice" class="bg-cyan-950/30">ICE</th>
-                            <th title="Dragon" class="bg-purple-950/30">DRAGON</th>
-                        </tr>
-                    </thead>
-                    <tbody id="hitzoneBody">
-                        <!-- Rows -->
-                    </tbody>
-                </table>
+        <!-- Right Dossier Column -->
+        <div class="p-5 sm:p-7">
+            <div class="mb-5 flex items-start justify-between border-b border-zinc-800 pb-4">
+                <div>
+                    <p class="section-label mb-1">Target Dossier &middot; MHW: Iceborne</p>
+                    <h2 id="modalName" class="text-2xl font-black uppercase text-zinc-100 sm:text-3xl">Monster Name</h2>
+                    <p id="modalEcology" class="mt-2 text-sm leading-relaxed text-zinc-300">Ecology description</p>
+                </div>
+                <button id="closeBtn" aria-label="Close monster details" class="ml-4 rounded border border-zinc-700 px-3 py-1 text-xl font-bold text-zinc-400 hover:border-amber-500 hover:text-white">&times;</button>
             </div>
-            <p class="text-xs text-zinc-500 mt-2">* Bold/Colored values indicate Weak Points (Raw &ge; 45, Elem &ge; 20).</p>
-        </div>
+
+            <!-- Weaknesses Section -->
+            <div class="mb-6 grid gap-4 sm:grid-cols-2">
+                <div class="rounded border border-zinc-800 bg-zinc-900/60 p-3.5">
+                    <h3 class="section-label mb-2.5">Elemental Weaknesses</h3>
+                    <div id="modalElementWeaknesses" class="space-y-1.5 text-xs"></div>
+                </div>
+                <div class="rounded border border-zinc-800 bg-zinc-900/60 p-3.5">
+                    <h3 class="section-label mb-2.5">Status Effectiveness</h3>
+                    <div id="modalStatusWeaknesses" class="space-y-1.5 text-xs"></div>
+                </div>
+            </div>
+
+            <!-- Rank Tabs (Low / High / Master) -->
+            <div class="mb-4 border-t border-zinc-800 pt-5">
+                <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <h3 class="section-label">Quest Rank Data (Drops &amp; Armor Sets)</h3>
+                    <div id="rankTabs" class="flex flex-wrap gap-2">
+                        <button type="button" data-rank="low" class="rank-tab rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider">Low Rank</button>
+                        <button type="button" data-rank="high" class="rank-tab rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider">High Rank</button>
+                        <button type="button" data-rank="master" class="rank-tab rounded-sm px-3 py-1.5 text-xs font-black uppercase tracking-wider">Master Rank</button>
+                    </div>
+                </div>
+
+                <!-- Material Drops Table -->
+                <div class="mb-6">
+                    <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+                        <h4 class="text-xs font-black uppercase tracking-wider text-zinc-300">
+                            Material Drops &amp; Drop Rates (<span id="activeRankLabel" class="text-amber-400">Master Rank</span>)
+                        </h4>
+                        <select id="dropMethodFilter" class="rounded border border-zinc-700 bg-zinc-900 px-2.5 py-1 text-xs text-zinc-200">
+                            <option value="all">All Methods</option>
+                        </select>
+                    </div>
+                    <div class="max-h-72 overflow-y-auto rounded border border-zinc-800">
+                        <table class="w-full drop-table text-left text-xs sm:text-sm">
+                            <thead class="sticky top-0 z-10">
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Method</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-right">Drop Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dropsTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Related Armor Sets -->
+                <div>
+                    <h4 class="mb-2.5 text-xs font-black uppercase tracking-wider text-zinc-300">
+                        Forgeable Armor Sets (<span id="activeArmorRankLabel" class="text-amber-400">Master Rank</span>)
+                    </h4>
+                    <div id="armorSetsContainer" class="space-y-3">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </dialog>
 
 <script src="monster-artwork.js"></script>
+<script src="mhw-service.js"></script>
 <script src="logic.js"></script>
 </body>
 </html>

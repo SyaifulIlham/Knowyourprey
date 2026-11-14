@@ -1,45 +1,26 @@
+// Pemetaan aset gambar lokal monster Monster Hunter: World & Iceborne
 window.monsterArtwork = {
-    "Aknosom": "assets/monsters/aknosom.png",
     "Anjanath": "assets/monsters/anjanath.png",
-    "Arzuros": "assets/monsters/arzuros.png",
-    "Astalos": "assets/monsters/astalos.png",
-    "Barroth": "assets/monsters/barroth.png",
     "Barioth": "assets/monsters/barioth.png",
-    "Basarios": "assets/monsters/basarios.png",
+    "Barroth": "assets/monsters/barroth.png",
     "Bazelgeuse": "assets/monsters/bazelgeuse.png",
     "Beotodus": "assets/monsters/beotodus.png",
-    "Bishaten": "assets/monsters/bishaten.png",
     "Brachydios": "assets/monsters/brachydios.png",
-    "Chameleos": "assets/monsters/chameleos.png",
-    "Congalala": "assets/monsters/congalala.png",
     "Diablos": "assets/monsters/diablos.png",
-    "Espinas": "assets/monsters/espinas.png",
     "Glavenus": "assets/monsters/glavenus.png",
-    "Gore Magala": "assets/monsters/gore-magala.png",
-    "Goss Harag": "assets/monsters/goss-harag.png",
     "Great Girros": "assets/monsters/great-girros.png",
     "Great Jagras": "assets/monsters/great-jagras.png",
-    "Great Maccao": "assets/monsters/great-maccao.png",
-    "Great Wroggi": "assets/monsters/great-wroggi.png",
-    "Khezu": "assets/monsters/khezu.png",
     "Kulu-Ya-Ku": "assets/monsters/kulu-ya-ku.png",
     "Kushala Daora": "assets/monsters/kushala-daora.webp",
     "Legiana": "assets/monsters/legiana.png",
     "Lunastra": "assets/monsters/lunastra.png",
-    "Magnamalo": "assets/monsters/magnamalo.png",
-    "Malzeno": "assets/monsters/malzeno.png",
-    "Mizutsune": "assets/monsters/mizutsune.png",
     "Nargacuga": "assets/monsters/nargacuga.png",
     "Nergigante": "assets/monsters/nergigante.png",
     "Paolumu": "assets/monsters/paolumu.png",
     "Pukei-Pukei": "assets/monsters/pukei-pukei.png",
     "Rajang": "assets/monsters/rajang.png",
     "Rathalos": "assets/monsters/rathalos.png",
-    "Seregios": "assets/monsters/seregios.png",
-    "Shagaru Magala": "assets/monsters/shagaru-magala.png",
-    "Somnacanth": "assets/monsters/somnacanth.png",
     "Teostra": "assets/monsters/teostra.png",
-    "Tetranadon": "assets/monsters/tetranadon.png",
     "Tigrex": "assets/monsters/tigrex.png",
     "Tobi-Kadachi": "assets/monsters/tobi-kadachi.png",
     "Uragaan": "assets/monsters/uragaan.png",
@@ -47,6 +28,26 @@ window.monsterArtwork = {
     "Velkhana": "assets/monsters/velkhana.png",
     "Viper Tobi-Kadachi": "assets/monsters/viper-tobi-kadachi.png",
     "Yian Garuga": "assets/monsters/yian-garuga.png",
-    "Yian Kut-Ku": "assets/monsters/yian-kut-ku.png",
     "Zinogre": "assets/monsters/zinogre.png"
+};
+
+// SVG Emblem Fallback jika monster MHW:I belum memiliki file PNG di folder assets/monsters/
+window.MONSTER_PLACEHOLDER_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <rect width="200" height="200" fill="none"/>
+  <polygon points="100,22 168,61 168,139 100,178 32,139 32,61" stroke="#d97706" stroke-width="3" stroke-opacity="0.45" fill="#1c1917" fill-opacity="0.6"/>
+  <polygon points="100,36 154,68 154,132 100,164 46,132 46,68" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.25" fill="none"/>
+  <path d="M72 118 L100 66 L128 118 L100 105 Z" fill="#f59e0b" fill-opacity="0.25" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="100" cy="134" r="6" fill="#fbbf24" fill-opacity="0.6"/>
+  <text x="100" y="154" text-anchor="middle" fill="#a8a29e" font-family="sans-serif" font-size="9" font-weight="bold" letter-spacing="2">GUILD ARCHIVE</text>
+</svg>
+`);
+
+window.getMonsterArtwork = function (monsterName) {
+    if (!monsterName) return window.MONSTER_PLACEHOLDER_SVG;
+    if (window.monsterArtwork[monsterName]) {
+        return window.monsterArtwork[monsterName];
+    }
+    const slug = monsterName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return `assets/monsters/${slug}.png`;
 };
